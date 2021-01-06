@@ -34,3 +34,13 @@ i {
 a {
   text-decoration: none;
 }
+.el-breadcrumb {
+  margin-bottom: 15px !important;
+}
+.el-table {
+  font-size: 12px !important;
+  margin-top: 15px;
+}
+.el-pagination {
+  margin-top: 15px;
+}
