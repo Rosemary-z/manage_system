@@ -150,13 +150,8 @@
       </el-dialog>
     </el-card>
     <!-- 分配用户角色对话框 -->
-    <el-dialog
-      title="分配角色"
-      :visible.sync="setRoleDialogVisible"
-      width="50%"
-      @close="setRoleClosed"
-    >
-      <div class="setRole">
+    <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible" width="50%">
+      <div>
         <p>当前用户：{{ userInfo.username }}</p>
         <p>当前角色：{{ userInfo.role_name }}</p>
         <el-select v-model="selectedId" placeholder="请选择">
@@ -171,7 +166,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRoleDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="setRole">确 定</el-button>
+        <el-button type="primary" @click="setRoleDialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -357,41 +352,14 @@ export default {
     // 展示分配角色对话框
     async showSetRoleDialog(role) {
       this.setRoleDialogVisible = true;
-      // this.userInfo.username = role.username;
-      // this.userInfo.role_name = role.role_name;
-      this.userInfo = role;
+      this.userInfo.username = role.username;
+      this.userInfo.role_name = role.role_name;
       const { data: res } = await this.$http.get("roles");
       this.roleList = res.data;
       console.log("角色列表", this.roleList);
-    },
-    // 分配角色
-    async setRole() {
-      // 判断当前用户是否选择新角色
-      if (!this.selectedId) {
-        return this.$message.error("请选择要分配的角色！");
-      }
-      const { data: res } = await this.$http.put(`users/${this.userInfo.id}/role`, {
-        rid: this.selectedId,
-      });
-      if (res.meta.status != 200) {
-        return this.$message.error("分配用户角色失败");
-      }
-      this.$message.success("分配用户角色成功");
-      this.getUserList();
-      this.setRoleDialogVisible = false;
-    },
-    setRoleClosed() {
-      this.selectedId = "";
     },
   },
 };
 </script>
 
-<style lang="less" scoped>
-.setRole {
-  p {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-}
-</style>
+<style lang="less" scoped></style>

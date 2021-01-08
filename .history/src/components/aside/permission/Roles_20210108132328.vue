@@ -117,8 +117,6 @@ export default {
       },
       // 默认选中的权限列表数组
       defKeys: [],
-      // 角色id
-      roleId: "",
     };
   },
   created() {
@@ -160,7 +158,6 @@ export default {
     // 展示所有用户权限列表
     async showSetRightsDialog(role) {
       // 递归获取已有的三级权限
-      this.roleId = role.id;
       this.defKeys = []; // 在调用函数前先清空数组
       this.getLeafKeys(role, this.defKeys);
       this.setRightsDialogVisible = true;
@@ -179,23 +176,12 @@ export default {
       }
     },
     // 点击为用户分配角色权限
-    async allotRights() {
+    allotRights() {
       const keys = [
         ...this.$refs.treeRef.getCheckedKeys(),
         ...this.$refs.treeRef.getHalfCheckedKeys(),
       ];
       console.log(keys);
-      const idStr = keys.join(",");
-      const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, {
-        rids: idStr,
-      });
-      if (res.meta.status != 200) {
-        this.$message.error("分配权限失败");
-      } else {
-        this.$message.success("分配权限成功");
-        this.getRoleList();
-        this.setRightsDialogVisible = false;
-      }
     },
   },
 };

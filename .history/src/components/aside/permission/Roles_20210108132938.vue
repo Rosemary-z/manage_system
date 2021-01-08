@@ -186,15 +186,13 @@ export default {
       ];
       console.log(keys);
       const idStr = keys.join(",");
-      const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, {
-        rids: idStr,
-      });
+      const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`);
       if (res.meta.status != 200) {
         this.$message.error("分配权限失败");
       } else {
         this.$message.success("分配权限成功");
         this.getRoleList();
-        this.setRightsDialogVisible = false;
+        this.showSetRightsDialog = false;
       }
     },
   },

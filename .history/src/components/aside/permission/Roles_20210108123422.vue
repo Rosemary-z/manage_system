@@ -90,12 +90,13 @@
         show-checkbox
         node-key="id"
         default-expand-all
-        :default-checked-keys="defKeys"
-        ref="treeRef"
+        default-checked-keys="defKeys"
       ></el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightsDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="allotRights">确 定</el-button>
+        <el-button type="primary" @click="setRightsDialogVisible = false"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -115,10 +116,8 @@ export default {
         children: "children",
         label: "authName",
       },
-      // 默认选中的权限列表数组
+      // 默认选中的权限
       defKeys: [],
-      // 角色id
-      roleId: "",
     };
   },
   created() {
@@ -160,8 +159,6 @@ export default {
     // 展示所有用户权限列表
     async showSetRightsDialog(role) {
       // 递归获取已有的三级权限
-      this.roleId = role.id;
-      this.defKeys = []; // 在调用函数前先清空数组
       this.getLeafKeys(role, this.defKeys);
       this.setRightsDialogVisible = true;
       // 请求用户权限列表数据
@@ -173,29 +170,11 @@ export default {
     getLeafKeys(node, arr) {
       // 如果当前node节点不包含children属性，则是三级节点
       if (!node.children) {
-        arr.push(node.id);
-      } else {
-        node.children.forEach((item) => this.getLeafKeys(item, arr));
+        this.arr.push(node.id);
       }
-    },
-    // 点击为用户分配角色权限
-    async allotRights() {
-      const keys = [
-        ...this.$refs.treeRef.getCheckedKeys(),
-        ...this.$refs.treeRef.getHalfCheckedKeys(),
-      ];
-      console.log(keys);
-      const idStr = keys.join(",");
-      const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, {
-        rids: idStr,
+      node.children.forEach((item) => {
+        this.getLeafKeys(item, arr);
       });
-      if (res.meta.status != 200) {
-        this.$message.error("分配权限失败");
-      } else {
-        this.$message.success("分配权限成功");
-        this.getRoleList();
-        this.setRightsDialogVisible = false;
-      }
     },
   },
 };

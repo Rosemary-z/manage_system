@@ -91,11 +91,12 @@
         node-key="id"
         default-expand-all
         :default-checked-keys="defKeys"
-        ref="treeRef"
       ></el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightsDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="allotRights">确 定</el-button>
+        <el-button type="primary" @click="setRightsDialogVisible = false"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -117,8 +118,6 @@ export default {
       },
       // 默认选中的权限列表数组
       defKeys: [],
-      // 角色id
-      roleId: "",
     };
   },
   created() {
@@ -160,7 +159,6 @@ export default {
     // 展示所有用户权限列表
     async showSetRightsDialog(role) {
       // 递归获取已有的三级权限
-      this.roleId = role.id;
       this.defKeys = []; // 在调用函数前先清空数组
       this.getLeafKeys(role, this.defKeys);
       this.setRightsDialogVisible = true;
@@ -176,25 +174,6 @@ export default {
         arr.push(node.id);
       } else {
         node.children.forEach((item) => this.getLeafKeys(item, arr));
-      }
-    },
-    // 点击为用户分配角色权限
-    async allotRights() {
-      const keys = [
-        ...this.$refs.treeRef.getCheckedKeys(),
-        ...this.$refs.treeRef.getHalfCheckedKeys(),
-      ];
-      console.log(keys);
-      const idStr = keys.join(",");
-      const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, {
-        rids: idStr,
-      });
-      if (res.meta.status != 200) {
-        this.$message.error("分配权限失败");
-      } else {
-        this.$message.success("分配权限成功");
-        this.getRoleList();
-        this.setRightsDialogVisible = false;
       }
     },
   },

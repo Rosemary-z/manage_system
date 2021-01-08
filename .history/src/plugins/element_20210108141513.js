@@ -29,6 +29,7 @@ import {
     MessageBox,
     Tag,
     Tree,
+    Select,
     Option
 
 } from 'element-ui'

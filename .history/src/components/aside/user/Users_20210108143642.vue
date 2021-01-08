@@ -150,12 +150,7 @@
       </el-dialog>
     </el-card>
     <!-- 分配用户角色对话框 -->
-    <el-dialog
-      title="分配角色"
-      :visible.sync="setRoleDialogVisible"
-      width="50%"
-      @close="setRoleClosed"
-    >
+    <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible" width="50%">
       <div class="setRole">
         <p>当前用户：{{ userInfo.username }}</p>
         <p>当前角色：{{ userInfo.role_name }}</p>
@@ -379,9 +374,6 @@ export default {
       this.$message.success("分配用户角色成功");
       this.getUserList();
       this.setRoleDialogVisible = false;
-    },
-    setRoleClosed() {
-      this.selectedId = "";
     },
   },
 };
