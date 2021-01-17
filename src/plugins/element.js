@@ -39,6 +39,7 @@ import {
     Checkbox,
     CheckboxGroup,
     Upload,
+    Icon,
 
 } from 'element-ui'
 Vue.use(Form)
@@ -78,6 +79,7 @@ Vue.use(Cascader)
 Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(Upload)
+Vue.use(Icon)
 
 Vue.prototype.$message = Message
 Vue.prototype.$notify = Notification
