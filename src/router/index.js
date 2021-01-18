@@ -22,10 +22,6 @@ const routes = [{
     path: '/login',
     component: Login
   },
-  // {
-  //   path: '/homepage',
-  //   component: HomePage
-  // },
   {
     path: '/home',
     component: Home,
@@ -55,7 +51,7 @@ const routes = [{
         component: GoodsList
       },
       {
-        path: '/goods/addgoods',
+        path: '/addgoods',
         component: AddGoods
       },
       {

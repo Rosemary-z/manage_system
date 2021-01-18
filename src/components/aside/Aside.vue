@@ -53,6 +53,8 @@ export default {
       activePath: "",
       userList: [],
       rolesList: [],
+      routeList: ["home", "login"], // 可访问的路由列表
+      childRoute: [],
     };
   },
   created() {
@@ -68,6 +70,19 @@ export default {
       return this.$store.state.index.activeTitle;
     },
   },
+  watch: {
+    activePath(newPath) {
+      // console.log(newPath);
+      if (newPath) {
+        const isAuthorized = this.routeList.includes(newPath.slice(1));
+        // console.log("是否有当前页面的授权", isAuthorized);
+        if (!isAuthorized) {
+          this.$message.error("您没有当前页面的访问权限");
+          this.$router.push("/home");
+        }
+      }
+    },
+  },
   methods: {
     async getMenuList() {
       const { data: res } = await this.$http.get("menus");
@@ -80,6 +95,18 @@ export default {
         });
       }
       this.menuList = res.data;
+      // console.log("当前用户能查看的菜单列表", res.data);
+      this.menuList.forEach((item) => {
+        if (!item.children) {
+          this.routeList.push(item.path);
+        } else {
+          item.children.forEach((itm) => {
+            this.childRoute.push(itm.path);
+          });
+        }
+      });
+      this.routeList = [...this.routeList, ...this.childRoute];
+      // console.log("一维路由访问列表", this.routeList);
     },
     // 点击子菜单选项，拿到path，跳转路由
     jumpTo(path) {

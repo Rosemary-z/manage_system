@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import VueRouter from 'vue-router'
 import './assets/css/reset.less'
 import './plugins/element'
 import 'element-ui/lib/theme-chalk/index.css' // elementui样式需要单独导入

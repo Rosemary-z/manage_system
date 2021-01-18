@@ -140,7 +140,7 @@ export default {
     },
     addGoods() {
       // 添加商品
-      this.$router.push("/goods/addgoods");
+      this.$router.push("/addgoods");
     },
   },
 };
