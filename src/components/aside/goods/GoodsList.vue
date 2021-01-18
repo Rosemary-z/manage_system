@@ -103,7 +103,6 @@ export default {
   methods: {
     async getGoodsList() {
       let { data: res } = await this.$http.get("goods", { params: this.queryInfo });
-      console.log("商品列表", res);
       if (res.meta.status != 200) {
         return this.$message.error("获取商品列表失败");
       }
@@ -113,7 +112,6 @@ export default {
     handleSizeChange(currentSize) {
       // size-change函数触发一个回调函数，拿到新的每页显示的条数值
       // 赋值  重新获取数据，渲染页面
-      console.log(currentSize);
       this.queryInfo.pagesize = currentSize;
       this.getGoodsList();
     },

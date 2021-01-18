@@ -9,7 +9,9 @@
     <!-- 卡片视图 -->
     <el-card>
       <!-- 添加分类按钮 -->
-      <el-button type="primary" size="mini" @click="showAddCateDialog">添加分类</el-button>
+      <el-button type="primary" size="mini" @click="showAddCateDialog"
+        >添加分类</el-button
+      >
       <!-- 分类表格 -->
       <tree-table
         :data="tableData"
@@ -24,13 +26,19 @@
       >
         <!-- 是否有效 -->
         <template slot="isOk" slot-scope="scope">
-          <i class="el-icon-success" style="color:lightgreen" v-if="scope.row.cat_deleted===false"></i>
-          <i class="el-icon-error" style="color:red" v-else></i>
+          <i
+            class="el-icon-success"
+            style="color: lightgreen"
+            v-if="scope.row.cat_deleted === false"
+          ></i>
+          <i class="el-icon-error" style="color: red" v-else></i>
         </template>
         <!-- 等级排序 -->
         <template slot="sort" slot-scope="scope">
-          <el-tag v-if="scope.row.cat_level===0" size="mini">一级</el-tag>
-          <el-tag v-else-if="scope.row.cat_level===1" type="success" size="mini">二级</el-tag>
+          <el-tag v-if="scope.row.cat_level === 0" size="mini">一级</el-tag>
+          <el-tag v-else-if="scope.row.cat_level === 1" type="success" size="mini"
+            >二级</el-tag
+          >
           <el-tag v-else type="warning" size="mini">三级</el-tag>
         </template>
         <!-- 编辑 -->
@@ -49,7 +57,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pagenum"
-        :page-sizes="[5,10,15,20]"
+        :page-sizes="[5, 10, 15, 20]"
         :page-size="queryInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -86,7 +94,7 @@
           </el-form-item>
         </el-form>
         <div slot="footer">
-          <el-button @click="addCateDialogVisible=false">取 消</el-button>
+          <el-button @click="addCateDialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="addCate">确 定</el-button>
         </div>
       </el-dialog>
@@ -102,42 +110,40 @@ export default {
       queryInfo: {
         type: 3,
         pagenum: 1, // 当前页码
-        pagesize: 5 // 每页显示多少条数据
+        pagesize: 5, // 每页显示多少条数据
       },
       total: 0,
       columns: [
         {
           label: "分类名称",
-          prop: "cat_name"
+          prop: "cat_name",
         },
         {
           label: "是否有效",
           // 定义当前列为模板列
           type: "template",
           // 表示当前这一列使用的模版名称
-          template: "isOk"
+          template: "isOk",
         },
         {
           label: "排序",
           type: "template",
-          template: "sort"
+          template: "sort",
         },
         {
           label: "编辑",
           type: "template",
-          template: "edit"
-        }
+          template: "edit",
+        },
       ],
       addCateDialogVisible: false, // 添加分类对话框默认关闭
       addCateForm: {
         cat_name: "",
         cat_pid: "", // 分类父ID
-        cat_level: 0 // 分类层级
+        cat_level: 0, // 分类层级
       }, // 添加分类表单数据对象
       addCateFormRules: {
-        cat_name: [
-          { required: true, message: "请输入分类名称", trigger: "blur" }
-        ]
+        cat_name: [{ required: true, message: "请输入分类名称", trigger: "blur" }],
       },
       parentCateList: [], // 父级分类列表数据
       cascadarProps: {
@@ -145,9 +151,9 @@ export default {
         expandTrigger: "hover",
         value: "cat_id",
         label: "cat_name",
-        children: "children"
+        children: "children",
       },
-      selectedKeys: [] // 级联选择器选择的id数组
+      selectedKeys: [], // 级联选择器选择的id数组
     };
   },
   created() {
@@ -159,14 +165,13 @@ export default {
     //   获取所有的商品分类列表
     async getCateList() {
       const { data: res } = await this.$http.get("categories", {
-        params: this.queryInfo
+        params: this.queryInfo,
       });
       if (res.meta.status !== 200) {
         return this.$message.error("获取商品分类列表失败！");
       }
       this.tableData = res.data.result;
       this.total = res.data.total;
-      console.log("所有商品分类", this.tableData);
     },
     // 监听 pageSizeChange
     handleSizeChange(newSize) {
@@ -183,8 +188,8 @@ export default {
       // 获取父级分类数据列表
       const { data: res } = await this.$http.get("categories", {
         params: {
-          type: 2
-        }
+          type: 2,
+        },
       });
       if (res.meta.status !== 200) {
         return this.$message.error("获取父级分类列表失败！");
@@ -197,9 +202,7 @@ export default {
       if (this.selectedKeys.length > 0) {
         // 证明选择了父级
         // 父级id则为数组长度-1
-        this.addCateForm.cat_pid = this.selectedKeys[
-          this.selectedKeys.length - 1
-        ];
+        this.addCateForm.cat_pid = this.selectedKeys[this.selectedKeys.length - 1];
         this.addCateForm.cat_level = this.selectedKeys.length;
         return;
       } else {
@@ -212,12 +215,9 @@ export default {
     addCate() {
       // 点击确认，添加分类
       console.log(this.addCateForm);
-      this.$refs.addCateFormRef.validate(async valid => {
+      this.$refs.addCateFormRef.validate(async (valid) => {
         if (!valid) return;
-        const { data: res } = await this.$http.post(
-          "categories",
-          this.addCateForm
-        );
+        const { data: res } = await this.$http.post("categories", this.addCateForm);
         if (res.meta.status !== 201) {
           return this.$message.error("添加分类失败！");
         }
@@ -242,9 +242,9 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning"
+          type: "warning",
         }
-      ).catch(err => err);
+      ).catch((err) => err);
       if (confirmResult !== "confirm") {
         return this.$message.info("已取消删除！");
       }
@@ -254,8 +254,8 @@ export default {
       }
       this.$message.success("删除商品分类成功！");
       this.getCateList();
-    }
-  }
+    },
+  },
 };
 </script>
 

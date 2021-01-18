@@ -51,6 +51,8 @@ export default {
         数据报表: "el-icon-s-data",
       },
       activePath: "",
+      userList: [],
+      rolesList: [],
     };
   },
   created() {

@@ -8,7 +8,7 @@
           <span>电商后台管理系统</span>
         </h2>
         <div class="login-box">
-          <span>您好：</span>
+          <span>您好：{{ userInfo.username }}</span>
           <el-button type="info" class="login-btn" size="small" @click="signOut"
             >退出登录</el-button
           >
@@ -39,7 +39,14 @@ export default {
     Main,
   },
   data() {
-    return {};
+    return {
+      userInfo: {
+        username: "",
+      },
+    };
+  },
+  created() {
+    this.userInfo.username = sessionStorage.getItem("username");
   },
   methods: {
     signOut() {

@@ -236,7 +236,6 @@ export default {
       const { data: res } = await this.$http.get("users", {
         params: this.queryInfo,
       });
-      // console.log(res);
       if (res.meta.status !== 200) {
         this.$message.error(res.meta.msg);
       }

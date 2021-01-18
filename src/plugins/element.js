@@ -40,6 +40,9 @@ import {
     CheckboxGroup,
     Upload,
     Icon,
+    Timeline,
+    TimelineItem
+
 
 } from 'element-ui'
 Vue.use(Form)
@@ -80,6 +83,8 @@ Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(Upload)
 Vue.use(Icon)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 
 Vue.prototype.$message = Message
 Vue.prototype.$notify = Notification
