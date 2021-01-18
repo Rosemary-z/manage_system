@@ -12,6 +12,7 @@ import AddGoods from '@/components/aside/goods/AddGoods'
 import Orders from '@/components/aside/order/Orders'
 import Reports from '@/components/aside/data/Reports'
 import HomePage from '@/components/main/HomePage'
+import ErrorPage from '@/components/404Page';
 Vue.use(VueRouter)
 
 const routes = [{
@@ -67,6 +68,10 @@ const routes = [{
         component: HomePage //默认显示首页
       },
     ]
+  },
+  {
+    path: '*',
+    component: ErrorPage,
   }
 ]
 

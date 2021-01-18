@@ -52,12 +52,7 @@
         <el-table-column prop="upd_time" width="100" label="创建时间"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              size="mini"
-              @click="showEditDialog(scope.row.id)"
-            ></el-button>
+            <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
             <el-button
               type="danger"
               icon="el-icon-delete"
