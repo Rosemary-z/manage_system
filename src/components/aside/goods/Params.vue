@@ -451,4 +451,7 @@ export default {
 .el-cascader {
   margin-top: 15px;
 }
+/deep/.el-tag {
+  margin: 0 10px 0 0;
+}
 </style>

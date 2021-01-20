@@ -26,7 +26,7 @@ const routes = [{
   {
     path: '/home',
     component: Home,
-    redirect: '/homepage',
+    // redirect: '/homepage',
     children: [{
         path: '/users',
         component: Users
@@ -69,9 +69,13 @@ const routes = [{
       },
     ]
   },
+  // {
+  //   path: '*',
+  //   component: ErrorPage,
+  // },
   {
-    path: '*',
-    component: ErrorPage,
+    path: '/404',
+    component: ErrorPage
   }
 ]
 
@@ -83,9 +87,16 @@ const router = new VueRouter({
 // 挂载导航守卫
 router.beforeEach((to, from, next) => {
   // 判断用户访问的是哪个页面，如果是非登录页，判断是否当前有token值，有才允许放行
-  if (to.path === '/login') return next()
   const tokenStr = window.sessionStorage.getItem('token');
+  if (to.path === '/login') {
+    if (tokenStr) {
+      sessionStorage.clear()
+      return next()
+    }
+    return next()
+  }
   if (!tokenStr) return next('/login')
   next()
 })
+
 export default router

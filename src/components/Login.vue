@@ -24,7 +24,7 @@
             <el-input
               v-model="loginForm.password"
               type="password"
-              prefix-icon="iconfont icon-3702mima"
+              prefix-icon="iconfont icon-lock"
             ></el-input>
           </el-form-item>
           <el-form-item class="btns">
@@ -56,6 +56,9 @@ export default {
           { min: 6, max: 18, message: "长度在 6 到 18 个字符", trigger: "blur" },
         ],
       },
+      menuList: [],
+      routeList: [],
+      childRoute: [],
     };
   },
   methods: {
@@ -64,6 +67,32 @@ export default {
       // console.log(this)
       // resetFields：element-ui提供的表单方法
       this.$refs.loginFormRef.resetFields();
+    },
+    async getMenuList() {
+      const { data: res } = await this.$http.get("menus");
+      // 将获取到的菜单列表存储到本地的数据中
+      if (res.meta.status !== 200) {
+        this.$notify({
+          title: "错误",
+          message: res.meta.msg,
+          type: "error",
+        });
+      }
+      this.menuList = res.data;
+      // console.log("当前用户能查看的菜单列表", res.data);
+      this.menuList.forEach((item) => {
+        if (!item.children) {
+          this.routeList.push(item.path);
+        } else {
+          item.children.forEach((itm) => {
+            this.childRoute.push(itm.path);
+          });
+        }
+      });
+      this.routeList = [...this.routeList, ...this.childRoute];
+      // console.log("一维路由访问列表", this.routeList);
+      sessionStorage.setItem("permissionList", this.routeList);
+      // console.log(sessionStorage.getItem("permissionList"));
     },
     login() {
       // 表单预验证
@@ -77,13 +106,14 @@ export default {
         console.log(res);
         if (res.meta.status !== 200) return this.$message.error("登录失败");
         this.$message.success("登录成功");
+        this.getMenuList();
         // 1、将登陆成功之后的token, 保存到客户端的sessionStorage中; localStorage中是持久化的保存
         //   1.1 项目中出现了登录之外的其他API接口，必须在登陆之后才能访问
         //   1.2 token 只应在当前网站打开期间生效，所以将token保存在sessionStorage中
         window.sessionStorage.setItem("token", res.data.token);
         window.sessionStorage.setItem("username", res.data.username);
         // 2、通过编程式导航跳转到后台主页, 路由地址为：/home
-        this.$router.push("/home");
+        this.$router.replace("/home");
       });
     },
   },

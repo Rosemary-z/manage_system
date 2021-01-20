@@ -55,6 +55,18 @@ export default {
       this.$router.push("/login");
     },
   },
+  // watch: {
+  //   $route(to, from) {
+  //     const tokenStr = window.sessionStorage.getItem("token");
+  //     // console.log("to", to);
+  //     // console.log("from", from);
+  //     // console.log(from.path);
+  //     if (to.path === "/login" && tokenStr) {
+  //       window.sessionStorage.clear();
+  //       this.$router.push(from.path);
+  //     }
+  //   },
+  // },
 };
 </script>
 
