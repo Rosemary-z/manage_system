@@ -1,18 +1,35 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '@/components/Login'
-import Home from '@/components/Home'
-import Users from '@/components/aside/user/Users'
-import Rights from '@/components/aside/permission/Rights'
-import Roles from '@/components/aside/permission/Roles'
-import Categories from '@/components/aside/goods/Categories'
-import GoodsList from '@/components/aside/goods/GoodsList'
-import Params from '@/components/aside/goods/Params'
-import AddGoods from '@/components/aside/goods/AddGoods'
-import Orders from '@/components/aside/order/Orders'
-import Reports from '@/components/aside/data/Reports'
-import HomePage from '@/components/main/HomePage'
-import ErrorPage from '@/components/404Page';
+// import Login from '@/components/Login'
+const Login = () => import( /* webpackChunkName: "login_homePage_home" */ '@/components/Login')
+// import HomePage from '@/components/main/HomePage'
+const HomePage = () => import( /* webpackChunkName: "login_homePage_home" */ '@/components/main/HomePage')
+// import Home from '@/components/Home'
+const Home = () => import( /* webpackChunkName: "login_homePage_home" */ '@/components/Home')
+
+// import Users from '@/components/aside/user/Users'
+const Users = () => import( /* webpackChunkName: "users_rights_roles" */ '@/components/aside/user/Users')
+// import Rights from '@/components/aside/permission/Rights'
+const Rights = () => import( /* webpackChunkName: "users_rights_roles" */ '@/components/aside/permission/Rights')
+// import Roles from '@/components/aside/permission/Roles'
+const Roles = () => import( /* webpackChunkName: "users_rights_roles" */ '@/components/aside/permission/Roles')
+
+// import Categories from '@/components/aside/goods/Categories'
+const Categories = () => import( /* webpackChunkName: "catgories_goodsList_params_addGoods" */ '@/components/aside/goods/Categories')
+// import GoodsList from '@/components/aside/goods/GoodsList'
+const GoodsList = () => import( /* webpackChunkName: "catgories_goodsList_params_addGoods" */ '@/components/aside/goods/GoodsList')
+// import Params from '@/components/aside/goods/Params'
+const Params = () => import( /* webpackChunkName: "catgories_goodsList_params_addGoods" */ '@/components/aside/goods/Params')
+// import AddGoods from '@/components/aside/goods/AddGoods'
+const AddGoods = () => import( /* webpackChunkName: "catgories_goodsList_params_addGoods" */ '@/components/aside/goods/AddGoods')
+
+// import Orders from '@/components/aside/order/Orders'
+const Orders = () => import( /* webpackChunkName: "orders_reports" */ '@/components/aside/order/Orders')
+// import Reports from '@/components/aside/data/Reports'
+const Reports = () => import( /* webpackChunkName: "orders_reports" */ '@/components/aside/data/Reports')
+
+// import ErrorPage from '@/components/404Page';
+const ErrorPage = () => import( /* webpackChunkName: "errorPage" */ '@/components/404Page')
 Vue.use(VueRouter)
 
 const routes = [{
@@ -26,7 +43,7 @@ const routes = [{
   {
     path: '/home',
     component: Home,
-    // redirect: '/homepage',
+    redirect: '/homepage',
     children: [{
         path: '/users',
         component: Users
@@ -80,7 +97,7 @@ const routes = [{
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes
 })

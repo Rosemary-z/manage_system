@@ -53,7 +53,7 @@ export default {
       activePath: "",
       userList: [],
       rolesList: [],
-      routeList: ["home", "login"], // 可访问的路由列表
+      routeList: ["home", "login", "homepage"], // 可访问的路由列表
       childRoute: [],
     };
   },
@@ -75,7 +75,6 @@ export default {
       // console.log(newPath);
       if (newPath) {
         const isAuthorized = this.routeList.includes(newPath.slice(1));
-        // console.log("是否有当前页面的授权", isAuthorized);
         if (!isAuthorized) {
           this.$message.error("您没有当前页面的访问权限");
           this.$router.push("/home");

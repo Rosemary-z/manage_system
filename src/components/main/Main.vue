@@ -5,31 +5,11 @@
 </template>
 
 <script>
-import Users from "../aside/user/Users";
-import Rights from "../aside/permission/Rights";
-import Roles from "../aside/permission/Roles";
-import Categories from "../aside/goods/Categories";
-import GoodsList from "../aside/goods/GoodsList";
-import Params from "../aside/goods/Params";
-import Orders from "../aside/order/Orders";
-import Reports from "../aside/data/Reports";
-import HomePage from "@/components/main/HomePage";
 export default {
   data() {
     return {
       bool: false,
     };
-  },
-  components: {
-    HomePage,
-    Users,
-    Rights,
-    Roles,
-    Categories,
-    GoodsList,
-    Params,
-    Orders,
-    Reports,
   },
   methods: {
     jumpTo() {

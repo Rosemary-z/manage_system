@@ -18,6 +18,8 @@
             <el-input
               v-model="loginForm.username"
               prefix-icon="iconfont icon-user"
+              @focus="changeInputStyle"
+              ref="inputBox"
             ></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
@@ -28,7 +30,9 @@
             ></el-input>
           </el-form-item>
           <el-form-item class="btns">
-            <el-button type="primary" @click="login">登录</el-button>
+            <el-button type="primary" @click="login" :disabled="loginDisabled"
+              >登录</el-button
+            >
             <el-button type="info" @click="resetLoginForm">重置</el-button>
           </el-form-item>
         </el-form>
@@ -45,21 +49,36 @@ export default {
         username: "",
         password: "",
       },
+      loginDisabled: true,
       // 表单验证
       loginFormRules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 2, max: 10, message: "长度在 2 到 10 个字符", trigger: "blur" },
+          { required: true, message: "请输入用户名", trigger: "submit" },
+          { min: 2, max: 10, message: "长度在 2 到 10 个字符", trigger: "submit" },
         ],
         password: [
-          { required: true, message: "请输入用户密码", trigger: "blur" },
-          { min: 6, max: 18, message: "长度在 6 到 18 个字符", trigger: "blur" },
+          { required: true, message: "请输入用户密码", trigger: "submit" },
+          { min: 6, max: 18, message: "长度在 6 到 18 个字符", trigger: "submit" },
         ],
       },
       menuList: [],
-      routeList: [],
+      routeList: ["home", "login", "homepage"], // 可访问的路由列表
       childRoute: [],
     };
+  },
+  watch: {
+    loginForm: {
+      // 监听登录表单对象，如果对象里面的值都不为空，则解除禁用，反之设置禁用
+      handler(newValue) {
+        if (newValue.username && newValue.password) {
+          this.loginDisabled = false;
+        } else {
+          this.loginDisabled = true;
+        }
+      },
+      deep: true,
+      // immediate: true,
+    },
   },
   methods: {
     // 表单重置按钮
@@ -91,7 +110,7 @@ export default {
       });
       this.routeList = [...this.routeList, ...this.childRoute];
       // console.log("一维路由访问列表", this.routeList);
-      sessionStorage.setItem("permissionList", this.routeList);
+      // sessionStorage.setItem("permissionList", this.routeList);
       // console.log(sessionStorage.getItem("permissionList"));
     },
     login() {
@@ -103,9 +122,10 @@ export default {
         // this.$http.post('login', this.loginForm): 返回值为promise
         // 返回值为promise，可加await简化操作 相应的也要加async
         const { data: res } = await this.$http.post("login", this.loginForm);
-        console.log(res);
-        if (res.meta.status !== 200) return this.$message.error("登录失败");
-        this.$message.success("登录成功");
+        // console.log(res);
+        if (res.meta.status !== 200)
+          return this.$notify({ title: "错误", type: "error", message: res.meta.msg });
+        this.$notify({ title: "成功", type: "success", message: res.meta.msg });
         this.getMenuList();
         // 1、将登陆成功之后的token, 保存到客户端的sessionStorage中; localStorage中是持久化的保存
         //   1.1 项目中出现了登录之外的其他API接口，必须在登陆之后才能访问
@@ -115,6 +135,9 @@ export default {
         // 2、通过编程式导航跳转到后台主页, 路由地址为：/home
         this.$router.replace("/home");
       });
+    },
+    changeInputStyle() {
+      this.$refs.inputBox.className = "inputBox";
     },
   },
 };
@@ -171,5 +194,19 @@ export default {
 .info {
   font-size: 13px;
   margin: 10px 15px;
+}
+
+/deep/.el-input__inner:focus {
+  border: 1px solid #41b883;
+  // box-shadow: 0px 0px 4px 4px #41b883;
+  animation: change 0.5s;
+}
+@keyframes change {
+  0% {
+    box-shadow: none;
+  }
+  100% {
+    box-shadow: 0px 0px 20px 0px #86c9c6;
+  }
 }
 </style>
